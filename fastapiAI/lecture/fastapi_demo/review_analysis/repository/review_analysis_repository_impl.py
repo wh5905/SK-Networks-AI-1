@@ -59,7 +59,7 @@ class ReviewAnalysisRepositoryImpl(ReviewAnalysisRepository):
 
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-        model.fit(xPaddingTrainSequenceList, yTrain, epochs=200, batch_size=128)
+        model.fit(xPaddingTrainSequenceList, yTrain, epochs=20, batch_size=128)
 
         model.save('review_analysis.h5')
 
