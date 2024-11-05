@@ -18,9 +18,12 @@ from convolution_neural_network.controller.cnn_controller import convolutionNeur
 from cot.cot_controller import cotRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from game_fine_tuning.gft_controller import openAiFineTuningTestRouter
 from gdft.controller.gdft_controller import gameDataFineTuningRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
+from image_generation.controller.image_generation_controller import imageGenerationRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from langchain_interconnect.controller.langchain_controller import langchainRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from openai_basic.controller.openai_basic_controller import openAIBasicRouter
@@ -31,6 +34,7 @@ from principal_component_analysis.controller.pca_controller import principalComp
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from review_analysis.controller.review_analysis_controller import reviewAnalysisRouter
+from rlhf.rlhf_controller import rlhfFineTuningRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
 from sentitest.controller.senticontrol import naturalLanguageProcessingRouter
@@ -246,7 +250,11 @@ app.include_router(reviewAnalysisRouter)
 app.include_router(naturalLanguageProcessingRouter)
 app.include_router(transitionLearningRouter)
 app.include_router(openAIBasicRouter)
+app.include_router(langchainRouter)
 app.include_router(cotRouter)
+app.include_router(openAiFineTuningTestRouter)
+app.include_router(rlhfFineTuningRouter)
+app.include_router(imageGenerationRouter)
 
 
 async def testTopicConsume(app: FastAPI):

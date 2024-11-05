@@ -29,4 +29,13 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
+    path('survey/', include('survey.urls')),
+    path('backlog/', include('backlog.urls')),
+    path('backlog-status/', include('backlog_status.urls')),
+    path('backlog-domain/', include('backlog_domain.urls')),
+    path('backlog-success-criteria/', include('backlog_success_criteria.urls')),
+    path('backlog-map-number/', include('backlog_map_number.urls')),
+    path('backlog-review/', include('backlog_review.urls')),
+    path('backlog-issue/', include('backlog_issue.urls')),
+    path('ai-request/', include('ai_request.urls')),
 ]

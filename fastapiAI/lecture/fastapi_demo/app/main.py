@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
+from ai_request.ai_request_controller import aiCommandRouter
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
 from cot.cot_controller import cotRouter
@@ -21,10 +22,12 @@ from exponential_regression.controller.exponential_regression_controller import 
 from game_fine_tuning.gft_controller import openAiFineTuningTestRouter
 from gdft.controller.gdft_controller import gameDataFineTuningRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
+from image_generation.controller.image_generation_controller import imageGenerationRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
 from langchain_interconnect.controller.langchain_controller import langchainRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from multi_modal.controller.multi_modal_controller import multiModalRouter
 from openai_basic.controller.openai_basic_controller import openAIBasicRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -33,6 +36,7 @@ from principal_component_analysis.controller.pca_controller import principalComp
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from review_analysis.controller.review_analysis_controller import reviewAnalysisRouter
+from rlhf.rlhf_controller import rlhfFineTuningRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
 from sentitest.controller.senticontrol import naturalLanguageProcessingRouter
@@ -100,9 +104,9 @@ warnings.filterwarnings("ignore", category=aiomysql.Warning)
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.dbPool)
+    # await createTableIfNeccessary(app.state.dbPool)
 
-    app.state.vectorDBPool = await getMongoDBPool()
+    # app.state.vectorDBPool = await getMongoDBPool()
 
     # # 비동기 I/O 정지 이벤트 감지
     # app.state.stop_event = asyncio.Event()
@@ -143,8 +147,8 @@ async def lifespan(app: FastAPI):
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
 
-        app.state.vectorDBPool.close()
-        await app.state.vectorDBPool.wait_closed()
+        # app.state.vectorDBPool.close()
+        # await app.state.vectorDBPool.wait_closed()
 
         # app.state.stop_event.set()
         #
@@ -247,6 +251,11 @@ app.include_router(openAIBasicRouter)
 app.include_router(langchainRouter)
 app.include_router(cotRouter)
 app.include_router(openAiFineTuningTestRouter)
+app.include_router(rlhfFineTuningRouter)
+app.include_router(imageGenerationRouter)
+app.include_router(multiModalRouter)
+
+app.include_router(aiCommandRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
@@ -314,4 +323,4 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.33", port=33333)
+    uvicorn.run(app, host="0.0.0.0", port=33333)
